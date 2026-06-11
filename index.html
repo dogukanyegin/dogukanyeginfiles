@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dogukanfiles — Radical Transparency Platform</title>
+  <meta name="description" content="Doğukan Yegin — Official Document Radical Transparency & Disinformation Prevention Platform" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base:       #0d1117;
+      --bg-card:       #161b22;
+      --bg-card-hover: #1c2128;
+      --border:        #30363d;
+      --border-subtle: #21262d;
+      --text-primary:  #e6edf3;
+      --text-secondary:#8b949e;
+      --text-muted:    #484f58;
+      --accent-blue:   #58a6ff;
+      --accent-green:  #3fb950;
+      --accent-orange: #d29922;
+      --accent-red:    #f85149;
+      --font-mono:     'Courier New', 'Lucida Console', monospace;
+      --font-body:     Georgia, 'Times New Roman', serif;
+      --radius:        6px;
+      --transition:    0.18s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body { visibility: hidden; }
+    body.lang-ready { visibility: visible; }
+
+    body {
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .container { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+    /* TOPBAR */
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+      background: rgba(13,17,23,0.97);
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .topbar-inner { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .topbar-logo {
+      font-family: var(--font-mono); font-size: 17px; font-weight: 700;
+      color: var(--accent-blue); letter-spacing: -0.5px; text-decoration: none;
+    }
+    .topbar-logo span { color: var(--text-secondary); font-weight: 400; }
+    .badge {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.2px;
+      font-weight: 700; text-transform: uppercase; border-radius: 4px; padding: 2px 7px;
+    }
+    .badge-green { color: var(--accent-green); border: 1px solid var(--accent-green); }
+    .badge-blue  { color: var(--accent-blue);  border: 1px solid var(--accent-blue);  }
+    .topbar-spacer { flex: 1; }
+
+    /* LANGUAGE SWITCHER */
+    .lang-switcher { display: flex; gap: 4px; align-items: center; }
+    .lang-btn {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      color: var(--text-muted); background: transparent; border: 1px solid transparent;
+      border-radius: 4px; padding: 3px 8px; cursor: pointer; transition: all var(--transition);
+      text-transform: uppercase;
+    }
+    .lang-btn:hover { color: var(--text-secondary); border-color: var(--border); }
+    .lang-btn.active { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(88,166,255,0.07); }
+
+    /* HERO */
+    .hero { padding: 48px 0 32px; border-bottom: 1px solid var(--border-subtle); }
+    .hero-label {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent-blue); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hero-label::before { content: ''; display: inline-block; width: 18px; height: 1px; background: var(--accent-blue); }
+    .hero-title {
+      font-family: var(--font-mono); font-size: clamp(20px, 3.8vw, 30px);
+      font-weight: 700; color: var(--text-primary); line-height: 1.25;
+      margin-bottom: 10px; letter-spacing: -0.5px;
+    }
+    .hero-title .highlight { color: var(--accent-blue); }
+    .hero-sub {
+      font-family: var(--font-body); font-size: 14px; color: var(--text-secondary);
+      font-style: italic; margin-bottom: 22px; max-width: 560px;
+    }
+    .hero-meta { display: flex; gap: 18px; flex-wrap: wrap; }
+    .hero-meta-item {
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-green); display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* WARNING BOX */
+    .warning-box {
+      margin: 26px 0;
+      border: 1px solid var(--accent-orange); border-left: 3px solid var(--accent-orange);
+      border-radius: var(--radius); background: rgba(210,153,34,0.06); padding: 16px 20px;
+    }
+    .warning-box-header {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent-orange); font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .warning-box p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+    .warning-box p + p { margin-top: 6px; }
+
+    /* SECTION HEADER */
+    .section-header {
+      padding: 30px 0 16px; display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid var(--border-subtle); margin-bottom: 18px;
+    }
+    .section-title { font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); }
+    .section-count {
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+      background: var(--border-subtle); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1px 8px;
+    }
+
+    /* DOCUMENT CARDS */
+    .docs-grid { display: grid; grid-template-columns: 1fr; gap: 11px; margin-bottom: 36px; }
+
+    .doc-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px 14px;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .doc-card::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+      background: var(--accent-blue); opacity: 0; transition: opacity var(--transition);
+    }
+    .doc-card:hover { border-color: var(--accent-blue); background: var(--bg-card-hover); transform: translateY(-1px); }
+    .doc-card:hover::after { opacity: 1; }
+    .doc-card.redacted::after { background: var(--accent-orange); }
+    .doc-card.redacted:hover { border-color: var(--accent-orange); }
+    .doc-card.verified::after { background: var(--accent-green); }
+    .doc-card.verified:hover { border-color: var(--accent-green); }
+
+    .doc-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+    .doc-card-title { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+
+    .doc-badge {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; font-weight: 700; border-radius: 4px; padding: 3px 8px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .badge-verified { color: var(--accent-green); border: 1px solid var(--accent-green); background: rgba(63,185,80,0.08); }
+    .badge-redacted { color: var(--accent-orange); border: 1px solid var(--accent-orange); background: rgba(210,153,34,0.08); }
+
+    .doc-details { list-style: none; margin-bottom: 14px; }
+    .doc-details li { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); padding: 3px 0; display: flex; align-items: baseline; gap: 8px; }
+    .doc-details li .key { color: var(--text-muted); min-width: 100px; flex-shrink: 0; }
+    .doc-details li .val { color: var(--text-secondary); }
+    .doc-details li .val.blue   { color: var(--accent-blue); }
+    .doc-details li .val.green  { color: var(--accent-green); }
+    .doc-details li .val.orange { color: var(--accent-orange); }
+
+    .doc-card-footer {
+      display: flex; align-items: center; justify-content: flex-end;
+      padding-top: 12px; border-top: 1px solid var(--border-subtle);
+      gap: 8px; flex-wrap: wrap;
+    }
+    .doc-filename { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); font-style: italic; margin-right: auto; word-break: break-all; max-width: 60%; }
+
+    .btn-inspect {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.5px;
+      color: var(--accent-blue); background: transparent; border: 1px solid var(--accent-blue);
+      border-radius: var(--radius); padding: 5px 14px; cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      text-decoration: none; display: inline-block;
+    }
+    .btn-inspect:hover { background: var(--accent-blue); color: #0d1117; }
+    
+    .btn-inspect.btn-orange { color: var(--accent-orange); border-color: var(--accent-orange); }
+    .btn-inspect.btn-orange:hover { background: var(--accent-orange); color: #0d1117; }
+
+    .btn-download {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.5px;
+      color: var(--accent-green); background: rgba(63,185,80,0.05); border: 1px solid var(--accent-green);
+      border-radius: var(--radius); padding: 5px 14px; cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      text-decoration: none; display: inline-block;
+    }
+    .btn-download:hover { background: var(--accent-green); color: #0d1117; }
+
+    .doc-card.empty { border-style: dashed; border-color: var(--border-subtle); opacity: 0.5; }
+    .doc-card.empty:hover { border-color: var(--border); transform: none; background: var(--bg-card); }
+    .doc-card.empty::after { display: none; }
+    .empty-label { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); text-align: center; padding: 10px 0; letter-spacing: 1px; }
+
+    /* SECURITY NOTICE */
+    .security-notice {
+      margin: 8px 0 28px; border: 1px solid var(--border-subtle);
+      border-radius: var(--radius); background: rgba(22,27,34,0.8); padding: 16px 20px;
+    }
+    .security-notice-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .security-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); }
+    .security-item .icon { font-size: 14px; width: 18px; text-align: center; }
+
+    /* LEGAL NOTICE */
+    .legal-notice {
+      margin: 0 0 28px; border: 1px solid var(--accent-red); border-left: 3px solid var(--accent-red);
+      border-radius: var(--radius); background: rgba(248,81,73,0.04); padding: 14px 20px;
+    }
+    .legal-notice-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-red); font-weight: 700; margin-bottom: 8px; }
+    .legal-notice p { font-size: 12px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* TRANSPARENCY DEFINITION BOX */
+    .transp-box {
+      margin: 0 0 28px;
+      border: 1px solid var(--accent-blue);
+      border-left: 3px solid var(--accent-blue);
+      border-radius: var(--radius);
+      background: rgba(88,166,255,0.04);
+      padding: 20px 24px;
+    }
+    .transp-box-header {
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--accent-blue); font-weight: 700;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .transp-box-header::before { content: '§'; font-size: 14px; }
+    .transp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 620px) { .transp-grid { grid-template-columns: 1fr; } }
+    .transp-col-yes, .transp-col-no {
+      border-radius: var(--radius); padding: 14px 16px;
+    }
+    .transp-col-yes { background: rgba(63,185,80,0.06); border: 1px solid rgba(63,185,80,0.25); }
+    .transp-col-no  { background: rgba(248,81,73,0.06); border: 1px solid rgba(248,81,73,0.25); }
+    .transp-col-label {
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px;
+      text-transform: uppercase; font-weight: 700; margin-bottom: 10px;
+    }
+    .transp-col-yes .transp-col-label { color: var(--accent-green); }
+    .transp-col-no  .transp-col-label { color: var(--accent-red); }
+    .transp-list { list-style: none; }
+    .transp-list li {
+      font-family: var(--font-body); font-size: 13px; color: var(--text-secondary);
+      line-height: 1.55; padding: 4px 0; display: flex; gap: 8px; align-items: baseline;
+    }
+    .transp-list li::before { flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; }
+    .transp-col-yes .transp-list li::before { content: '✓'; color: var(--accent-green); }
+    .transp-col-no  .transp-list li::before { content: '✗'; color: var(--accent-red); }
+    .transp-note {
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle);
+      font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+      line-height: 1.6; font-style: italic;
+    }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 22px 0 30px; margin-top: 16px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+    .footer-brand { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+    .footer-brand strong { color: var(--text-secondary); display: block; margin-bottom: 2px; }
+    .footer-right { text-align: right; }
+    .footer-motto { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--accent-blue); letter-spacing: 1px; margin-bottom: 4px; }
+    .footer-noctrl { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.15s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; max-width: 440px; width: 100%; }
+    .modal-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+    .modal-title { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
+    .modal-body { font-size: 13px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px; }
+    .modal-docname { font-family: var(--font-mono); font-size: 12px; color: var(--accent-blue); background: var(--bg-base); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; margin: 10px 0; word-break: break-all; }
+    .modal-close { font-family: var(--font-mono); font-size: 12px; color: var(--text-primary); background: var(--border); border: none; border-radius: var(--radius); padding: 8px 20px; cursor: pointer; transition: background var(--transition); }
+    .modal-close:hover { background: var(--text-muted); }
+
+    @media (max-width: 560px) {
+      .hero { padding: 28px 0 20px; }
+      .doc-card-header { flex-direction: column; gap: 8px; }
+      .doc-card-footer { justify-content: stretch; }
+      .doc-filename { max-width: 100%; margin-bottom: 8px; }
+      .footer-inner { flex-direction: column; }
+      .footer-right { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+  <noscript><style>body { visibility: visible; }</style></noscript>
+
+  <header class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <a class="topbar-logo" href="#">dogukan<span>files</span></a>
+        <span class="badge badge-green">STATIC</span>
+        <span class="badge badge-blue">NO-DB</span>
+        <div class="topbar-spacer"></div>
+        <nav class="lang-switcher" aria-label="Language">
+          <button class="lang-btn active" onclick="setLang('no')" title="Norsk">NO</button>
+          <button class="lang-btn" onclick="setLang('sv')" title="Svenska">SV</button>
+          <button class="lang-btn" onclick="setLang('da')" title="Dansk">DA</button>
+          <button class="lang-btn" onclick="setLang('en')" title="English">EN</button>
+          <button class="lang-btn" onclick="setLang('tr')" title="Türkçe">TR</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="hero">
+        <div class="hero-label" id="t-platform-label">Offisiell Dokumentplattform</div>
+        <h1 class="hero-title">
+          <span class="highlight">Doğukan Yegin</span><br>
+          <span id="t-hero-title">Radikal Åpenhet &amp; Desinformasjonsforebygging</span>
+        </h1>
+        <p class="hero-sub">Autism Awareness Party Sverige · NorthByte Norway Tec Ltd. · UN Global Compact</p>
+        <div class="hero-meta">
+          <span class="hero-meta-item"><span class="dot"></span><span id="t-platform-active">PLATTFORM AKTIV</span></span>
+          <span class="hero-meta-item">// ZERO DATABASE</span>
+          <span class="hero-meta-item">// GDPR COMPLIANT</span>
+          <span class="hero-meta-item">// GITHUB PAGES</span>
+        </div>
+      </section>
+
+      <div class="warning-box">
+        <div class="warning-box-header" id="t-warn-title">⚠ Systemintegritet og Åpenhetsbekreftelse</div>
+        <p id="t-warn-p1">Denne plattformen inneholder ingen database, administrasjonspanel, bakdør eller ekstern sporingsmekanisme. Alle dokumenter publiseres utelukkende etter eierens fulle initiativ og samtykke.</p>
+        <p id="t-warn-p2">Plattformens sikkerhet er overlatt direkte til Microsoft &amp; GitHubs globale infrastruktur. Dataintegritet og personvern er beskyttet i henhold til GDPR artikkel 5(1)(f) og KVKK artikkel 4.</p>
+      </div>
+
+      <section>
+        <div class="section-header">
+          <span class="section-title" id="t-archive-title">Dokumentarkiv</span>
+          <span class="section-count" id="doc-count">0</span>
+        </div>
+
+        <div class="docs-grid" id="docs-grid">
+
+          <div class="doc-card verified">
+            <div class="doc-card-header">
+              <span class="doc-card-title">NorthByte Norway Tec Ltd. — Certificate of Incorporation</span>
+              <span class="doc-badge badge-verified">VERIFIED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="company-reg"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val">Companies House (UK)</span></li>
+              <li><span class="key" data-key="company-no"></span><span class="val blue">17140202</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="april-2026"></span></li>
+              <li><span class="key" data-key="status"></span><span class="val green" data-val="published-no-redact"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">northbyte_certificate_of_incorporation.pdf</span>
+              <a href="northbyte_certificate_of_incorporation.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect" onclick="showModal('northbyte_certificate_of_incorporation.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card verified">
+            <div class="doc-card-header">
+              <span class="doc-card-title">UN Global Compact — <span data-val="commitment-letter"></span></span>
+              <span class="doc-badge badge-verified">VERIFIED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="intl-commitment"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val">United Nations Global Compact</span></li>
+              <li><span class="key" data-key="participant-id"></span><span class="val blue">211077</span></li>
+              <li><span class="key" data-key="scope"></span><span class="val" data-val="ungc-scope"></span></li>
+              <li><span class="key" data-key="status"></span><span class="val green" data-val="published"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">un_global_compact_commitment_letter.pdf</span>
+              <a href="un_global_compact_commitment_letter.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect" onclick="showModal('un_global_compact_commitment_letter.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card redacted">
+            <div class="doc-card-header">
+              <span class="doc-card-title" data-val="transcripts-title"></span>
+              <span class="doc-badge badge-redacted">REDACTED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="transcript-type"></span></li>
+              <li><span class="key" data-key="scope"></span><span class="val">Atatürk Ü. · Anadolu Ü. (×2) · İstanbul Ü. (×2) · MEB</span></li>
+              <li><span class="key" data-key="redaction"></span><span class="val orange">GDPR Art. 5(1)(f) · KVKK Art. 4</span></li>
+              <li><span class="key" data-key="producer"></span><span class="val">NorthByte Norway Tec Ltd.</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="may-2026"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">academic_transcripts_redacted_northbyte_2026.pdf</span>
+              <a href="academic_transcripts_redacted_northbyte_2026.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect btn-orange" onclick="showModal('academic_transcripts_redacted_northbyte_2026.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card verified">
+            <div class="doc-card-header">
+              <span class="doc-card-title">Ashile Family Arms — <span data-val="heraldic-reg"></span></span>
+              <span class="doc-badge badge-verified">VERIFIED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="heraldic-type"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val">The International Armorial Register</span></li>
+              <li><span class="key" data-key="reg-no"></span><span class="val blue">Vol. V — No: 0773</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="dec-2025"></span></li>
+              <li><span class="key" data-key="motto"></span><span class="val green">Fortitudine et Honore</span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">ashile_family_arms_armorial_register_0773.pdf</span>
+              <a href="ashile_family_arms_armorial_register_0773.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect" onclick="showModal('ashile_family_arms_armorial_register_0773.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card verified">
+            <div class="doc-card-header">
+              <span class="doc-card-title" data-val="paysera-title"></span>
+              <span class="doc-badge badge-verified">VERIFIED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="bank-statement"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val">Paysera LT, UAB</span></li>
+              <li><span class="key" data-key="iban"></span><span class="val blue">LT443500010019018128</span></li>
+              <li><span class="key" data-key="currency"></span><span class="val">EUR</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="may12-2026"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">EVP3410019018128_2026-05-12.pdf</span>
+              <a href="EVP3410019018128_2026-05-12.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect" onclick="showModal('EVP3410019018128_2026-05-12.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card redacted">
+            <div class="doc-card-header">
+              <span class="doc-card-title" data-val="health-report-title"></span>
+              <span class="doc-badge badge-redacted">REDACTED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="health-report-type"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val" data-val="health-inst"></span></li>
+              <li><span class="key" data-key="redaction"></span><span class="val orange">GDPR Art. 5(1)(f) · KVKK Art. 4</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="sep-2023"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">saglik-e-imzali-eriskinler-icin-engellilik-saglik-kurulu-raporlari-sorgulama-redacted (3) (1).pdf</span>
+              <a href="saglik-e-imzali-eriskinler-icin-engellilik-saglik-kurulu-raporlari-sorgulama-redacted (3) (1).pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect btn-orange" onclick="showModal('saglik-e-imzali-eriskinler-icin-engellilik-saglik-kurulu-raporlari-sorgulama-redacted (3) (1).pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card redacted">
+            <div class="doc-card-header">
+              <span class="doc-card-title" data-val="criminal-record-title"></span>
+              <span class="doc-badge badge-redacted">REDACTED</span>
+            </div>
+            <ul class="doc-details">
+              <li><span class="key" data-key="doc-type"></span><span class="val" data-val="criminal-record-type"></span></li>
+              <li><span class="key" data-key="institution"></span><span class="val" data-val="criminal-inst"></span></li>
+              <li><span class="key" data-key="redaction"></span><span class="val orange">GDPR Art. 5(1)(f) · KVKK Art. 4</span></li>
+              <li><span class="key" data-key="date"></span><span class="val" data-val="jun-2026"></span></li>
+            </ul>
+            <div class="doc-card-footer">
+              <span class="doc-filename">adli-sicil-kaydi-redacted.pdf</span>
+              <a href="adli-sicil-kaydi-redacted.pdf" download class="btn-download" data-btn="download"></a>
+              <button class="btn-inspect btn-orange" onclick="showModal('adli-sicil-kaydi-redacted.pdf')" data-btn="inspect"></button>
+            </div>
+          </div>
+
+          <div class="doc-card empty">
+            <div class="empty-label" id="t-empty-slot">// LEDIG PLASS — Nytt dokument legges her</div>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="security-notice">
+        <div class="security-notice-title" id="t-security-title">// Sikkerhetsarkitektur</div>
+        <div class="security-grid">
+          <div class="security-item"><span class="icon">🔒</span><span id="ts1">100% Statisk Struktur</span></div>
+          <div class="security-item"><span class="icon">🚫</span><span id="ts2">Null Admin Panel</span></div>
+          <div class="security-item"><span class="icon">🛡️</span><span id="ts3">Branch Protection Aktiv</span></div>
+          <div class="security-item"><span class="icon">🍪</span><span id="ts4">Ingen Informasjonskapsler</span></div>
+          <div class="security-item"><span class="icon">🌐</span><span id="ts5">GitHub Pages Infrastruktur</span></div>
+          <div class="security-item"><span class="icon">⚖️</span><span id="ts6">GDPR · KVKK Kompatibel</span></div>
+        </div>
+      </div>
+
+      <div class="legal-notice">
+        <div class="legal-notice-title" id="t-legal-title">⚖ Juridisk Merknad / Legal Notice</div>
+        <p id="t-legal-p"></p>
+      </div>
+
+      <div class="transp-box">
+        <div class="transp-box-header" id="t-transp-title">Hva betyr åpenhet — og hva betyr det ikke</div>
+        <div class="transp-grid">
+          <div class="transp-col-yes">
+            <div class="transp-col-label" id="t-transp-yes-label">✓ Åpenhet er</div>
+            <ul class="transp-list" id="t-transp-yes-list"></ul>
+          </div>
+          <div class="transp-col-no">
+            <div class="transp-col-label" id="t-transp-no-label">✗ Åpenhet er ikke</div>
+            <ul class="transp-list" id="t-transp-no-list"></ul>
+          </div>
+        </div>
+        <div class="transp-note" id="t-transp-note"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <strong>Autism Awareness Party Sverige (AAP) &nbsp;·&nbsp; NorthByte Norway Tec Ltd.</strong>
+          Ideell Förening &nbsp;·&nbsp; Companies House No: 17140202 &nbsp;·&nbsp; UN Global Compact ID: 211077<br>
+          <span id="t-no-cookies">Ingen informasjonskapsler eller sporingsmekanismer.</span>
+        </div>
+        <div class="footer-right">
+          <div class="footer-motto">Fortitudine et Honore</div>
+          <div class="footer-noctrl">dogukanfiles · github.io · STATIC BUILD</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <span class="modal-icon">📄</span>
+      <div class="modal-title" id="modal-title">Dokumentverifisering</div>
+      <div class="modal-body" id="modal-body">
+        <div class="modal-docname" id="modal-docname"></div>
+      </div>
+      <button class="modal-close" id="modal-close-btn" onclick="closeModal()">Lukk</button>
+    </div>
+  </div>
+
+  <script>
+  var T = {
+    no: {
+      lang: 'no',
+      'platform-label': 'Offisiell Dokumentplattform',
+      'hero-title': 'Radikal Åpenhet &amp; Desinformasjonsforebygging',
+      'platform-active': 'PLATTFORM AKTIV',
+      'warn-title': '⚠ Systemintegritet og Åpenhetsbekreftelse',
+      'warn-p1': 'Denne plattformen inneholder ingen database, administrasjonspanel, bakdør eller ekstern sporingsmekanisme. Alle dokumenter publiseres utelukkende etter eierens fulle initiativ og samtykke.',
+      'warn-p2': 'Plattformens sikkerhet er overlatt direkte til Microsoft &amp; GitHubs globale infrastruktur. Dataintegritet og personvern er beskyttet i henhold til GDPR artikkel 5(1)(f) og KVKK artikkel 4.',
+      'archive-title': 'Dokumentarkiv',
+      'security-title': '// Sikkerhetsarkitektur',
+      'legal-title': '⚖ Juridisk Merknad / Legal Notice',
+      'legal-p': 'Alle dokumenter på denne plattformen er gjort offentlig tilgjengelig av eieren utelukkende for å motvirke desinformasjon fra tredjeparter eller ondsinnede aktører. Uautorisert manipulering av dokumenter, produksjon av falskt innhold eller forvridning i karalekampanjer vil føre til internasjonale strafferettslige og IT-juridiske sanksjoner.',
+      'no-cookies': 'Ingen informasjonskapsler eller sporingsmekanismer.',
+      'empty-slot': '// LEDIG PLASS — Nytt dokument legges her',
+      'doc-type': 'Dokumenttype:', 'institution': 'Institusjon:', 'company-no': 'Selskaps-nr.:',
+      'participant-id': 'Deltaker-ID:', 'scope': 'Omfang:', 'status': 'Status:',
+      'redaction': 'Redaksjon:', 'producer': 'Produsent:', 'reg-no': 'Reg.-nr.:',
+      'motto': 'Motto:', 'iban': 'IBAN:', 'currency': 'Valuta:', 'date': 'Dato:',
+      'company-reg': 'Selskapsregistreringsbevis',
+      'april-2026': 'April 2026', 'published-no-redact': 'Publisert · Ingen redaksjon',
+      'published': 'Publisert',
+      'commitment-letter': 'Forpliktelsesbrev',
+      'intl-commitment': 'Institusjonell forpliktelse / Internasjonal',
+      'ungc-scope': 'Menneskerettigheter · Arbeidsstandard · Miljø · Antikorrupsjon',
+      'transcripts-title': 'Akademiske Karakterutskrifter — GDPR/KVKK Redigert',
+      'transcript-type': 'Akademisk utskriftspakke (6 institusjoner)',
+      'may-2026': 'Mai 2026',
+      'heraldic-reg': 'Heraldisk Registrering',
+      'heraldic-type': 'Offisiell våbenregistrering',
+      'dec-2025': '31. desember 2025',
+      'paysera-title': 'Paysera Bedriftskontoutskrift',
+      'bank-statement': 'Offisiell kontoutskrift',
+      'may12-2026': '12. mai 2026',
+      'inspect': 'Vis Dokument',
+      'download': 'Last Ned',
+      'health-report-title': 'Helseutvalgets Uførhetsrapport',
+      'health-report-type': 'Offisiell Helserapport',
+      'health-inst': 'Sisli Hamidiye Etfal Sykehus',
+      'sep-2023': 'September 2023',
+      'criminal-record-title': 'Politiattest / Vandel',
+      'criminal-record-type': 'Offisiell Politiattest',
+      'criminal-inst': 'Justisdepartementet (Tyrkia)',
+      'jun-2026': 'Juni 2026',
+      'modal-title': 'Dokumentverifisering',
+      'modal-body': 'Dokumentet du ønsker å inspisere:',
+      'modal-body2': 'Dette dokumentet er tilknyttet den aktuelle filen i GitHub-repositoriet. Åpne dokumentet direkte via repositoriet for visning.',
+      'modal-close': 'Lukk',
+      ts1:'100% Statisk Struktur', ts2:'Null Admin Panel', ts3:'Branch Protection Aktiv',
+      ts4:'Ingen Informasjonskapsler', ts5:'GitHub Pages Infrastruktur', ts6:'GDPR · KVKK Kompatibel',
+      'transp-title': '§ Hva betyr åpenhet — og hva betyr det ikke',
+      'transp-yes-label': '✓ Åpenhet er',
+      'transp-yes': [
+        'Offisielle selskaps- og registreringsdokumenter',
+        'Juridiske brev, tiltak og institusjonelle forpliktelser',
+        'Finansielle virksomhetskontoutskrifter',
+        'Heraldiske registreringer og akademiske transkripter',
+        'Offentlig aktivisme og institusjonelle erklæringer',
+        'Juridisk hevdelse av egne rettigheter og offisielle klager'
+      ],
+      'transp-no-label': '✗ Åpenhet er ikke',
+      'transp-no': [
+        'Familiemedlemmers private hemmeligheter uten samtykke',
+        'Konfidensielle øyeblikk eller minner med partner',
+        'Private og intime livserfaringer som tilhører andre',
+        'Soverommet — personlig privatliv forblir alltid privat',
+        'Tredjeparts personopplysninger uten eksplisitt samtykke',
+        'Å avsløre andres hemmeligheter som ikke er mine å dele'
+      ],
+      'transp-note': '§ Åpenhet = juridisk og institusjonell ansvarlighet. Min egen informasjon kan jeg dele. Familiens, partnerens og næres private liv deles aldri uten eksplisitt samtykke. — Fortitudine et Honore.'
+    },
+    sv: {
+      lang: 'sv',
+      'platform-label': 'Officiell Dokumentplattform',
+      'hero-title': 'Radikal Öppenhet &amp; Desinformationsförebyggande',
+      'platform-active': 'PLATTFORM AKTIV',
+      'warn-title': '⚠ Systemintegritet och Öppenhetsdeklaration',
+      'warn-p1': 'Denna plattform innehåller ingen databas, administrationspanel, bakdörr eller extern spårningsmekanism. Alla dokument publiceras uteslutande på ägarens fulla initiativ och samtycke.',
+      'warn-p2': 'Plattformens säkerhet är direkt delegerad till Microsoft &amp; GitHubs globala infrastruktur. Dataintegritet och integritet skyddas i enlighet med GDPR artikel 5(1)(f) och KVKK artikel 4.',
+      'archive-title': 'Dokumentarkiv',
+      'security-title': '// Säkerhetsarkitektur',
+      'legal-title': '⚖ Juridiskt Meddelande / Legal Notice',
+      'legal-p': 'Alla dokument på denna plattform har offentliggjorts av ägaren uteslutande för att motverka desinformation från tredje parter eller illvilliga aktörer. Obehörig manipulering av dokument, produktion av falskt innehåll eller förvrängning i nedsvärtningskampanjer kommer att leda till internationella straffrättsliga och IT-juridiska sanktioner.',
+      'no-cookies': 'Inga cookies eller spårningsmekanismer.',
+      'empty-slot': '// LEDIG PLATS — Nytt dokument läggs här',
+      'doc-type': 'Dokumenttyp:', 'institution': 'Institution:', 'company-no': 'Org.nr.:',
+      'participant-id': 'Deltagar-ID:', 'scope': 'Omfång:', 'status': 'Status:',
+      'redaction': 'Redigering:', 'producer': 'Producent:', 'reg-no': 'Reg.nr.:',
+      'motto': 'Motto:', 'iban': 'IBAN:', 'currency': 'Valuta:', 'date': 'Datum:',
+      'company-reg': 'Bolagsregistreringsbevis',
+      'april-2026': 'April 2026', 'published-no-redact': 'Publicerat · Ingen redigering',
+      'published': 'Publicerat',
+      'commitment-letter': 'Åtagandebrev',
+      'intl-commitment': 'Institutionellt åtagande / Internationellt',
+      'ungc-scope': 'Mänskliga rättigheter · Arbetsstandard · Miljö · Antikorruption',
+      'transcripts-title': 'Akademiska Betygsutdrag — GDPR/KVKK Redigerat',
+      'transcript-type': 'Akademiskt utdragspaket (6 institutioner)',
+      'may-2026': 'Maj 2026',
+      'heraldic-reg': 'Heraldisk Registrering',
+      'heraldic-type': 'Officiell vapenregistrering',
+      'dec-2025': '31 december 2025',
+      'paysera-title': 'Paysera Företagskontoutdrag',
+      'bank-statement': 'Officiellt kontoutdrag',
+      'may12-2026': '12 maj 2026',
+      'inspect': 'Visa Dokument',
+      'download': 'Ladda ner',
+      'health-report-title': 'Hälsonämndens Invaliditetsintyg',
+      'health-report-type': 'Officiell Hälsorapport',
+      'health-inst': 'Sisli Hamidiye Etfal Sjukhus',
+      'sep-2023': 'September 2023',
+      'criminal-record-title': 'Belastningsregisterutdrag',
+      'criminal-record-type': 'Officiellt Brottsregisterutdrag',
+      'criminal-inst': 'Justitieministeriet (Turkiet)',
+      'jun-2026': 'Juni 2026',
+      'modal-title': 'Dokumentverifiering',
+      'modal-body': 'Dokumentet du vill inspektera:',
+      'modal-body2': 'Detta dokument är kopplat till relevant fil i GitHub-repositoriet. Öppna dokumentet direkt via repositoriet för visning.',
+      'modal-close': 'Stäng',
+      ts1:'100% Statisk Struktur', ts2:'Noll Admin Panel', ts3:'Branch Protection Aktiv',
+      ts4:'Inga Cookies', ts5:'GitHub Pages Infrastruktur', ts6:'GDPR · KVKK Kompatibel',
+      'transp-title': '§ Vad öppenhet betyder — och vad det inte betyder',
+      'transp-yes-label': '✓ Öppenhet är',
+      'transp-yes': [
+        'Officiella företags- och registreringsdokument',
+        'Juridiska brev, åtgärder och institutionella åtaganden',
+        'Finansiella företagskontoutdrag',
+        'Heraldiske registreringar och akademiska betygsutdrag',
+        'Offentlig aktivism och institutionella uttalanden',
+        'Juridisk hävdelse av egna rättigheter och officiella klagomål'
+      ],
+      'transp-no-label': '✗ Öppenhet är inte',
+      'transp-no': [
+        'Familjemedlemmars privata hemligheter utan samtycke',
+        'Konfidentiella ögonblick eller minnen med partner',
+        'Privata och intima livserfarenheter som tillhör andra',
+        'Sovrummet — personlig integritet förblir alltid privat',
+        'Tredje parts personuppgifter utan uttryckligt samtycke',
+        'Att avslöja andres hemligheter som inte är mina att dela'
+      ],
+      'transp-note': '§ Öppenhet = juridisk och institutionell ansvarsskyldighet. Min egen information kan jag dela. Familjens, partnerns och nära personers privatliv delas aldrig utan uttryckligt samtycke. — Fortitudine et Honore.'
+    },
+    da: {
+      lang: 'da',
+      'platform-label': 'Officiel Dokumentplatform',
+      'hero-title': 'Radikal Åbenhed &amp; Desinformationsforebyggelse',
+      'platform-active': 'PLATFORM AKTIV',
+      'warn-title': '⚠ Systemintegritet og Åbenhedserklæring',
+      'warn-p1': 'Denne platform indeholder ingen database, administrationspanel, bagdør eller ekstern sporingsmekanisme. Alle dokumenter offentliggøres udelukkende på ejerens fulde initiativ og samtykke.',
+      'warn-p2': 'Platformens sikkerhed er direkte delegeret til Microsoft &amp; GitHubs globale infrastruktur. Dataintegritet og privatliv er beskyttet i henhold til GDPR artikel 5(1)(f) og KVKK artikel 4.',
+      'archive-title': 'Dokumentarkiv',
+      'security-title': '// Sikkerhedsarkitektur',
+      'legal-title': '⚖ Juridisk Meddelelse / Legal Notice',
+      'legal-p': 'Alle dokumenter på denne platform er offentliggjort af ejeren udelukkende for at modvirke desinformation fra tredjeparter eller ondsindede aktører. Uautoriseret manipulation af dokumenter, produktion af falsk indhold eller forvrængning i bagvaskelseskampagner vil medføre internationale strafferetlige og IT-juridiske sanktioner.',
+      'no-cookies': 'Ingen cookies eller sporingsmekanismer.',
+      'empty-slot': '// LEDIG PLADS — Nyt dokument placeres her',
+      'doc-type': 'Dokumenttype:', 'institution': 'Institution:', 'company-no': 'CVR-nr.:',
+      'participant-id': 'Deltager-ID:', 'scope': 'Omfang:', 'status': 'Status:',
+      'redaction': 'Redigering:', 'producer': 'Producent:', 'reg-no': 'Reg.nr.:',
+      'motto': 'Motto:', 'iban': 'IBAN:', 'currency': 'Valuta:', 'date': 'Dato:',
+      'company-reg': 'Selskabsregistreringsbevis',
+      'april-2026': 'April 2026', 'published-no-redact': 'Offentliggjort · Ingen redigering',
+      'published': 'Offentliggjort',
+      'commitment-letter': 'Tilsagnsbrev',
+      'intl-commitment': 'Institutionel forpligtelse / International',
+      'ungc-scope': 'Menneskerettigheder · Arbejdsstandard · Miljø · Antikorruption',
+      'transcripts-title': 'Akademiske Karakterudskrifter — GDPR/KVKK Redigeret',
+      'transcript-type': 'Akademisk udskriftspakke (6 institutioner)',
+      'may-2026': 'Maj 2026',
+      'heraldic-reg': 'Heraldisk Registrering',
+      'heraldic-type': 'Officiel våbenregistrering',
+      'dec-2025': '31. december 2025',
+      'paysera-title': 'Paysera Virksomhedskontoudtog',
+      'bank-statement': 'Officielt kontoudtog',
+      'may12-2026': '12. maj 2026',
+      'inspect': 'Vis Dokument',
+      'download': 'Download',
+      'health-report-title': 'Sundhedsudvalgets Handicaprapport',
+      'health-report-type': 'Officiel Helbredsrapport',
+      'health-inst': 'Sisli Hamidiye Etfal Hospital',
+      'sep-2023': 'September 2023',
+      'criminal-record-title': 'Straffeattest',
+      'criminal-record-type': 'Officiel Straffeattest',
+      'criminal-inst': 'Justitsministeriet (Tyrkiet)',
+      'jun-2026': 'Juni 2026',
+      'modal-title': 'Dokumentbekræftelse',
+      'modal-body': 'Det dokument, du ønsker at inspicere:',
+      'modal-body2': 'Dette dokument er knyttet til den relevante fil i GitHub-repositoriet. Åbn dokumentet direkte via repositoriet for visning.',
+      'modal-close': 'Luk',
+      ts1:'100% Statisk Struktur', ts2:'Nul Admin Panel', ts3:'Branch Protection Aktiv',
+      ts4:'Ingen Cookies', ts5:'GitHub Pages Infrastruktur', ts6:'GDPR · KVKK Kompatibel',
+      'transp-title': '§ Hvad åbenhed betyder — og hvad det ikke betyder',
+      'transp-yes-label': '✓ Åbenhed er',
+      'transp-yes': [
+        'Officielle selskabs- og registreringsdokumenter',
+        'Juridiske breve, tiltag og institutionelle forpligtelser',
+        'Finansielle virksomhedskontoudtog',
+        'Heraldiske registreringer og akademiske karakterudskrifter',
+        'Offentlig aktivisme og institutionelle erklæringer',
+        'Juridisk håndhævelse af egne rettigheder og officielle klager'
+      ],
+      'transp-no-label': '✗ Åbenhed er ikke',
+      'transp-no': [
+        'Familiemedlemmers private hemmeligheder uden samtykke',
+        'Fortrolige øjeblikke eller minder med partner',
+        'Private og intime livserfaringer, der tilhører andre',
+        'Soveværelset — personligt privatliv forbliver altid privat',
+        'Tredjemands personoplysninger uden udtrykkelig samtykke',
+        'At afsløre andres hemmeligheder, der ikke er mine at dele'
+      ],
+      'transp-note': '§ Åbenhed = juridisk og institutionel ansvarlighed. Min egen information kan jeg dele. Familiens, partnerens og næres privatliv deles aldrig uden udtrykkelig samtykke. — Fortitudine et Honore.'
+    },
+    en: {
+      lang: 'en',
+      'platform-label': 'Official Document Platform',
+      'hero-title': 'Radical Transparency &amp; Disinformation Prevention',
+      'platform-active': 'PLATFORM ACTIVE',
+      'warn-title': '⚠ System Integrity and Transparency Declaration',
+      'warn-p1': 'This platform contains no database, administration panel, backdoor or external tracking mechanism. All documents are published solely on the owner\'s full initiative and consent.',
+      'warn-p2': 'Platform security is directly delegated to Microsoft &amp; GitHub\'s global infrastructure. Data integrity and privacy are protected pursuant to GDPR Article 5(1)(f) and KVKK Article 4.',
+      'archive-title': 'Document Archive',
+      'security-title': '// Security Architecture',
+      'legal-title': '⚖ Legal Notice',
+      'legal-p': 'All documents on this platform have been made publicly available by the owner solely to counteract disinformation by third parties or malicious actors. Unauthorised manipulation of documents, production of false content or distortion in defamation campaigns will result in international criminal and IT-legal sanctions.',
+      'no-cookies': 'No cookies or tracking mechanisms.',
+      'empty-slot': '// EMPTY SLOT — New document will be placed here',
+      'doc-type': 'Document Type:', 'institution': 'Institution:', 'company-no': 'Company No.:',
+      'participant-id': 'Participant ID:', 'scope': 'Scope:', 'status': 'Status:',
+      'redaction': 'Redaction:', 'producer': 'Producer:', 'reg-no': 'Reg. No.:',
+      'motto': 'Motto:', 'iban': 'IBAN:', 'currency': 'Currency:', 'date': 'Date:',
+      'company-reg': 'Company Registration Certificate',
+      'april-2026': 'April 2026', 'published-no-redact': 'Published · No Redaction Applied',
+      'published': 'Published',
+      'commitment-letter': 'Commitment Letter',
+      'intl-commitment': 'Institutional Commitment / International',
+      'ungc-scope': 'Human Rights · Labour Standards · Environment · Anti-Corruption',
+      'transcripts-title': 'Academic Transcripts — GDPR/KVKK Redacted',
+      'transcript-type': 'Academic Transcript Package (6 institutions)',
+      'may-2026': 'May 2026',
+      'heraldic-reg': 'Heraldic Registration',
+      'heraldic-type': 'Official Arms Registration',
+      'dec-2025': '31 December 2025',
+      'paysera-title': 'Paysera Corporate Account Statement',
+      'bank-statement': 'Official Bank Account Statement',
+      'may12-2026': '12 May 2026',
+      'inspect': 'View Document',
+      'download': 'Download',
+      'health-report-title': 'Disability Health Board Report',
+      'health-report-type': 'Official Health Board Report',
+      'health-inst': 'Sisli Hamidiye Etfal Training & Research Hospital',
+      'sep-2023': 'September 2023',
+      'criminal-record-title': 'Criminal Record Certificate',
+      'criminal-record-type': 'Official Criminal Record (Clean)',
+      'criminal-inst': 'Ministry of Justice (Turkey)',
+      'jun-2026': 'June 2026',
+      'modal-title': 'Document Verification',
+      'modal-body': 'The document you wish to inspect:',
+      'modal-body2': 'This document is linked to the relevant file in the GitHub repository. Open the document directly via the repository for viewing.',
+      'modal-close': 'Close',
+      ts1:'100% Static Structure', ts2:'Zero Admin Panel', ts3:'Branch Protection Active',
+      ts4:'No Cookies / Tracking', ts5:'GitHub Pages Infrastructure', ts6:'GDPR · KVKK Compliant',
+      'transp-title': '§ What transparency means — and what it does not mean',
+      'transp-yes-label': '✓ Transparency is',
+      'transp-yes': [
+        'Official corporate and registration documents',
+        'Legal letters, actions and institutional commitments',
+        'Financial corporate account statements',
+        'Heraldic registrations and academic transcripts',
+        'Public advocacy and institutional declarations',
+        'Legal assertion of one\'s own rights and official complaints'
+      ],
+      'transp-no-label': '✗ Transparency is not',
+      'transp-no': [
+        'Family members\' private secrets without their consent',
+        'Confidential moments or memories shared with a partner',
+        'Private and intimate life experiences belonging to others',
+        'The bedroom — personal privacy always remains private',
+        'Third-party personal data without explicit consent',
+        'Revealing others\' secrets that are not mine to share'
+      ],
+      'transp-note': '§ Transparency = legal and institutional accountability. I may share my own information. The private lives of my family, partner and close ones are never shared without explicit consent. — Fortitudine et Honore.'
+    },
+    tr: {
+      lang: 'tr',
+      'platform-label': 'Resmi Belge Platformu',
+      'hero-title': 'Radikal Şeffaflık &amp; Dezenformasyon Engelleme',
+      'platform-active': 'PLATFORM AKTİF',
+      'warn-title': '⚠ Sistem Bütünlüğü ve Şeffaflık Beyanı',
+      'warn-p1': 'Bu platform hiçbir veritabanı, yönetici paneli, arka kapı veya harici takip mekanizması barındırmaz. Tüm belgeler sahibinin tam inisiyatifi ve rızasıyla yayınlanmaktadır.',
+      'warn-p2': 'Platform güvenliği doğrudan Microsoft &amp; GitHub küresel altyapısına taşınmıştır. Veri bütünlüğü ve mahremiyeti, GDPR Madde 5(1)(f) ve KVKK Madde 4 kapsamında korunmaktadır.',
+      'archive-title': 'Belge Arşivi',
+      'security-title': '// Güvenlik Mimarisi',
+      'legal-title': '⚖ Yasal Uyarı / Legal Notice',
+      'legal-p': 'Bu platformda paylaşılan tüm dokümanlar, 3. şahısların veya kötü niyetli odakların dezenformasyon girişimlerini engellemek amacıyla, sahibinin rızası ve iradesiyle kamuya açılmıştır. Belgelerin izinsiz manipüle edilmesi, sahte içerik üretilmesi veya karalama kampanyalarında çarpıtılarak kullanılması durumunda uluslararası ceza hukuku ve bilişim hukuku yaptırımları devreye sokulacaktır.',
+      'no-cookies': 'Bu site çerez veya takip mekanizması barındırmaz.',
+      'empty-slot': '// SLOT BOŞ — Yeni belge buraya eklenecek',
+      'doc-type': 'Belge Türü:', 'institution': 'Kurum:', 'company-no': 'Şirket No.:',
+      'participant-id': 'Katılımcı ID:', 'scope': 'Kapsam:', 'status': 'Durum:',
+      'redaction': 'Redakte:', 'producer': 'Üretici:', 'reg-no': 'Tescil No.:',
+      'motto': 'Motto:', 'iban': 'IBAN:', 'currency': 'Para Birimi:', 'date': 'Tarih:',
+      'company-reg': 'Şirket Tescil Belgesi',
+      'april-2026': 'Nisan 2026', 'published-no-redact': 'Yayınlandı · Redakte Uygulanmadı',
+      'published': 'Yayınlandı',
+      'commitment-letter': 'Katılım Taahhüt Mektubu',
+      'intl-commitment': 'Kurumsal Taahhüt / Uluslararası',
+      'ungc-scope': 'İnsan Hakları · İş Standartları · Çevre · Yolsuzlukla Mücadele',
+      'transcripts-title': 'Akademik Transkriptler — GDPR/KVKK Redakte Sürümü',
+      'transcript-type': 'Akademik Transkript Paketi (6 Kurum)',
+      'may-2026': 'Mayıs 2026',
+      'heraldic-reg': 'Armalı Tescil Belgesi',
+      'heraldic-type': 'Resmi Arma Tescili',
+      'dec-2025': '31 Aralık 2025',
+      'paysera-title': 'Paysera Kurumsal Hesap Dökümü',
+      'bank-statement': 'Resmi Banka Hesap Özeti',
+      'may12-2026': '12 Mayıs 2026',
+      'inspect': 'Belgeyi İncele',
+      'download': 'İndir',
+      'health-report-title': 'Engellilik Sağlık Kurulu Raporu',
+      'health-report-type': 'Resmi Sağlık Kurulu Raporu',
+      'health-inst': 'Şişli Hamidiye Etfal E.A.H.',
+      'sep-2023': 'Eylül 2023',
+      'criminal-record-title': 'Adli Sicil Kaydı',
+      'criminal-record-type': 'Resmi Adli Sicil Belgesi (Temiz)',
+      'criminal-inst': 'T.C. Adalet Bakanlığı',
+      'jun-2026': 'Haziran 2026',
+      'modal-title': 'Belge Doğrulama',
+      'modal-body': 'İncelemek istediğiniz belge:',
+      'modal-body2': 'Bu belge GitHub repository içindeki ilgili dosyaya bağlıdır. Doğrudan görüntülemek için belgeyi repository üzerinden açınız.',
+      'modal-close': 'Kapat',
+      ts1:'%100 Statik Yapı', ts2:'Sıfır Admin Paneli', ts3:'Branch Protection Aktif',
+      ts4:'Çerez / Takip Yok', ts5:'GitHub Pages Altyapısı', ts6:'GDPR · KVKK Uyumlu',
+      'transp-title': '§ Şeffaf Olmak Neyi İfade Eder — Neyi İfade Etmez',
+      'transp-yes-label': '✓ Şeffaflık şudur',
+      'transp-yes': [
+        'Resmi şirket ve tescil belgeleri',
+        'Hukuki mektuplar, eylemler ve kurumsal taahhütler',
+        'Kurumsal finansal hesap dökümleri',
+        'Arma tescilleri ve akademik transkriptler',
+        'Kamuoyu savunuculuğu ve kurumsal beyanlar',
+        'Kendi haklarını hukuki yollarla savunmak ve resmi şikâyet'
+      ],
+      'transp-no-label': '✗ Şeffaflık şu değildir',
+      'transp-no': [
+        'Aile bireylerinin rızası alınmadan paylaşılan özel sırları',
+        'Partnerle yaşanan gizli anlar veya özel anılar',
+        'Başkasına ait özel ve mahrem hayat deneyimleri',
+        'Yatak odası — kişisel mahremiyet her zaman özel kalır',
+        'Açık rıza olmadan üçüncü şahsın kişisel verileri',
+        'Bana ait olmayan sırları ifşa etmek'
+      ],
+      'transp-note': '§ Şeffaflık = hukuki ve kurumsal hesap verebilirlik. Kendi bilgilerimi paylaşabilirim. Ailemi, partnerimi ve yakınlarımı ilgilendiren özel yaşam bilgileri, onların açık rızası olmadan asla paylaşılmaz. — Fortitudine et Honore.'
+    }
+  };
+
+  var currentLang = 'no';
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el && typeof value === 'string') el.textContent = value;
+  }
+  function setHTML(id, value) {
+    var el = document.getElementById(id);
+    if (el && typeof value === 'string') el.innerHTML = value;
+  }
+  function fillList(id, items) {
+    var el = document.getElementById(id);
+    if (!el || !Array.isArray(items)) return;
+    el.innerHTML = '';
+    items.forEach(function(item) {
+      var li = document.createElement('li');
+      li.textContent = item;
+      el.appendChild(li);
+    });
+  }
+
+  function setLang(lang) {
+    if (!T[lang]) return;
+    currentLang = lang;
+    var t = T[lang];
+
+    document.documentElement.lang = lang;
+
+    // Topbar buttons
+    document.querySelectorAll('.lang-btn').forEach(function(btn) {
+      var oc = btn.getAttribute('onclick') || '';
+      btn.classList.toggle('active', oc.indexOf("'" + lang + "'") !== -1);
+    });
+
+    // Hero
+    setText('t-platform-label', t['platform-label']);
+    setHTML('t-hero-title', t['hero-title']);
+    setText('t-platform-active', t['platform-active']);
+
+    // Warning box
+    setText('t-warn-title', t['warn-title']);
+    setText('t-warn-p1', t['warn-p1']);
+    setHTML('t-warn-p2', t['warn-p2']);
+
+    // Section
+    setText('t-archive-title', t['archive-title']);
+
+    // Security
+    setText('t-security-title', t['security-title']);
+    ['ts1','ts2','ts3','ts4','ts5','ts6'].forEach(function(id) {
+      setText(id, t[id]);
+    });
+
+    // Legal
+    setText('t-legal-title', t['legal-title']);
+    setText('t-legal-p', t['legal-p']);
+
+    // Transparency Definition
+    setText('t-transp-title', t['transp-title']);
+    setText('t-transp-yes-label', t['transp-yes-label']);
+    setText('t-transp-no-label', t['transp-no-label']);
+    setText('t-transp-note', t['transp-note']);
+    fillList('t-transp-yes-list', t['transp-yes']);
+    fillList('t-transp-no-list', t['transp-no']);
+
+    // Footer
+    setText('t-no-cookies', t['no-cookies']);
+    setText('t-empty-slot', t['empty-slot']);
+
+    // Translate data-key elements
+    document.querySelectorAll('[data-key]').forEach(function(el) {
+      var key = el.getAttribute('data-key');
+      if (t[key]) el.textContent = t[key];
+    });
+
+    // Translate data-val elements
+    document.querySelectorAll('[data-val]').forEach(function(el) {
+      var val = el.getAttribute('data-val');
+      if (t[val]) el.textContent = t[val];
+    });
+
+    // Translate inspect & download buttons
+    document.querySelectorAll('[data-btn="inspect"]').forEach(function(btn) {
+      btn.textContent = t['inspect'];
+    });
+    document.querySelectorAll('[data-btn="download"]').forEach(function(btn) {
+      btn.textContent = t['download'];
+    });
+  }
+
+  function showModal(filename) {
+    var t = T[currentLang];
+    var modalTitle  = document.getElementById('modal-title');
+    var modalBody   = document.getElementById('modal-body');
+    var modalClose  = document.getElementById('modal-close-btn');
+    var modalOverlay = document.getElementById('modal-overlay');
+    
+    if (!modalTitle || !modalBody || !modalClose || !modalOverlay) return;
+    
+    modalTitle.textContent = t['modal-title'];
+    
+    modalBody.textContent = ''; 
+    modalBody.appendChild(document.createTextNode(t['modal-body'])); 
+    
+    var docNameDiv = document.createElement('div');
+    docNameDiv.className = 'modal-docname';
+    docNameDiv.textContent = filename; 
+    modalBody.appendChild(docNameDiv);
+    
+    modalBody.appendChild(document.createTextNode(t['modal-body2'])); 
+    
+    modalClose.textContent = t['modal-close'];
+    modalOverlay.classList.add('active');
+  }
+
+  function closeModal() {
+    var overlay = document.getElementById('modal-overlay');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  function closeModalOutside(e) {
+    var overlay = document.getElementById('modal-overlay');
+    if (overlay && e.target === overlay) closeModal();
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  (function init() {
+    setLang('no');
+    var countEl = document.getElementById('doc-count');
+    var grid    = document.getElementById('docs-grid');
+    if (countEl && grid) {
+      countEl.textContent = grid.querySelectorAll('.doc-card:not(.empty)').length;
+    }
+    document.body.classList.add('lang-ready');
+  })();
+  </script>
+
+</body>
+</html>
